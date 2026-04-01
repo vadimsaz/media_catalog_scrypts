@@ -1,4 +1,9 @@
 # 📸 Photo Sorter Ultimate
+![Python](https://img.shields.io/badge/python-3.9%2B-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-production--ready-brightgreen)
+![Performance](https://img.shields.io/badge/performance-optimized-orange)
 
 Профессиональный Python-скрипт для автоматической организации фото и видео в структурированную файловую систему по датам (YYYY-MM) с использованием логики определения даты, аналогичной Google Photos.
 
