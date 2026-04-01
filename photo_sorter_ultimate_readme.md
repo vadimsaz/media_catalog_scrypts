@@ -1,155 +1,129 @@
 # 📸 Photo Sorter Ultimate
 
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Status](https://img.shields.io/badge/status-production--ready-brightgreen)
-![Performance](https://img.shields.io/badge/performance-optimized-orange)
-
-> Smart photo & video organizer with Google Photos–like date detection, safe processing pipeline, and duplicate handling.
+Профессиональный Python-скрипт для автоматической организации фото и видео в структурированную файловую систему по датам (YYYY-MM) с использованием логики определения даты, аналогичной Google Photos.
 
 ---
 
-## ✨ Demo
+## 🚀 Описание
 
-### 📂 Input (unsorted media dump)
-```
-DCIM/
-  IMG_001.jpg
-  VID_20240101.mp4
-  random.png
-```
+Photo Sorter Ultimate предназначен для обработки больших архивов медиафайлов (фото и видео) и приведения их к понятной и чистой структуре хранения.
 
-### 📁 Output (organized archive)
-```
-Archive/
-  2024-01/
-  2024-02/
-  _CORRUPTED/
-```
+Скрипт автоматически:
+- определяет наиболее точную дату создания файла
+- сортирует файлы по папкам вида ГОД-МЕСЯЦ (например 2024-01)
+- устраняет дубликаты
+- проверяет целостность файлов
+- поддерживает безопасный режим работы без риска потери данных
 
 ---
 
-## 🖼 Screenshots
+## 🧠 Как определяется дата файла
 
-### Before
-![Before](docs/screenshots/before.png)
+Скрипт использует приоритетную логику (как Google Photos):
 
-### After
-![After](docs/screenshots/after.png)
-
-### With --split-by-type
-![Split](docs/screenshots/split.png)
-
-> 📌 Add your screenshots to: docs/screenshots/
-
----
-
-## 🚀 Features
-
-### 🧠 Smart Date Detection (like Google Photos)
-
-Priority order:
-
-1. EXIF DateTimeOriginal  
+1. EXIF DateTimeOriginal (дата съёмки)
 2. EXIF DateTimeDigitized  
 3. EXIF Image DateTime  
-4. Date from filename  
-5. File system timestamps  
+4. Дата из имени файла (например IMG_20240101_123456.jpg)
+5. Дата файловой системы (самая ранняя из доступных)
 
 ---
 
-### 🔒 Safe Processing Pipeline
+## 🔒 Режимы работы
 
-- Default mode: COPY (safe)
-- Optional: --move
-- MD5 verification
-- No data loss
+### 1. COPY (по умолчанию — безопасный режим)
 
----
+Файлы копируются в архив, оригиналы остаются на месте.
 
-### ♻️ Duplicate Detection
+### 2. MOVE (режим перемещения)
 
-- Hash-based (MD5)
-- Skips duplicates in copy mode
-- Deletes duplicates in move mode
+Файлы удаляются из исходной папки после успешного копирования и проверки.
+
+Флаг:
+--move
 
 ---
 
-### 🗂 Flexible Folder Structure
+## ♻️ Обработка дубликатов
 
-Default:
-```
+- используется MD5-хэш
+- в COPY режиме → файл пропускается
+- в MOVE режиме → оригинал удаляется
+
+---
+
+## 🗂 Структура папок
+
+По умолчанию:
 2024-01/
 2024-02/
-```
 
-With --split-by-type:
-```
+С флагом --split-by-type:
 2024-01/
   Images/
   Videos/
   Others/
-```
 
 ---
 
-### ⚡ Fast Mode
+## ⚡ Быстрый режим
 
---fast → skips deep validation (3–5x faster)
+Флаг:
+--fast
 
----
-
-### 🧪 Corrupted File Handling
-
-_CORRUPTED/ folder for broken files
+Отключает глубокую проверку и ускоряет обработку
 
 ---
 
-## 📦 Installation
+## 🧪 Поврежденные файлы
 
-```
+Перемещаются в папку:
+_CORRUPTED/
+
+---
+
+## 📦 Установка
+
 pip install exifread pillow tqdm
-```
 
 ---
 
-## ▶️ Usage
+## ▶️ Использование
 
-Basic:
-```
+Базовый запуск:
 python photo_sorter_ultimate.py SOURCE DEST
-```
 
-Move mode:
-```
+Перемещение:
 python photo_sorter_ultimate.py SOURCE DEST --move
-```
 
-Split:
-```
+Разделение:
 python photo_sorter_ultimate.py SOURCE DEST --split-by-type
-```
 
-Fast:
-```
+Быстрый режим:
 python photo_sorter_ultimate.py SOURCE DEST --fast
-```
+
+Комбинация:
+python photo_sorter_ultimate.py D:\Photos D:\Archive --move --split-by-type --fast
 
 ---
 
-## 📁 Project Structure
+## 📁 Результат
 
-```
-photo-sorter-ultimate/
-├── photo_sorter_ultimate.py
-├── README.md
-├── docs/screenshots/
-└── sorting_log.txt
-```
+Archive/
+  2024-01/
+  2024-02/
+  _CORRUPTED/
 
 ---
 
-## 📜 License
+## ⚠️ Нюансы
+
+- В Windows ctime ≠ дата создания
+- EXIF используется как основной источник
+- Поддержка HEIC и больших изображений
+
+---
+
+## 📜 Лицензия
 
 MIT
